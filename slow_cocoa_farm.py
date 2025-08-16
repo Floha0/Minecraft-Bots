@@ -67,6 +67,42 @@ def takeItemFromChest():
             keyboard.press_and_release("esc")
             break
 
+def getToLogSpot():
+    def findSuitableLane():
+        firstz = int(m.player_position()[2])
+        while True:
+            m.player_press_right(True)
+            time.sleep(0.5)
+
+            while (firstz - int(m.player_position()[2])) % 3:
+                time.sleep(0.01)
+            
+            m.player_press_right(False)
+            time.sleep(0.1)
+            print(m.player_get_targeted_block(4))
+
+            if m.player_get_targeted_block(4) is None:
+                print("None")
+                break
+
+    def walkThroughLane():
+        m.player_press_forward(True)
+        print()
+        while True:
+            time.sleep(0.02)
+            if(m.player_get_targeted_block(3) is not None):
+                break
+        m.player_press_forward(False)
+
+    m.execute("/is go 2")
+    time.sleep(1)
+    m.player_set_orientation(90, 10.8)
+    time.sleep(0.05)
+    findSuitableLane()
+    walkThroughLane()
+
+getToLogSpot()
+
 def placeLog(corner): # corner = 0 - 1 - 2
     ## Jump and place log
     time.sleep(0.1)
@@ -126,10 +162,33 @@ def moveToCorner(whereTo):
     m.echo("stopped moving")
     m.player_press_forward(False)
     
+def buildFarm():
+    while True:
+        # 1 means (to) first corner
+        placeCocoas(1)
+        moveToCorner(2)
+        placeCocoas(2)
+        placeLog(2)
+        placeCocoas(2)
+        moveToCorner(1)
+        placeCocoas(1)
+
+        inv = m.player_inventory()
+        jungle_log_items = [item for item in inv if "jungle_log" in item.item]
+        jungle_log_count = sum(item.count for item in jungle_log_items)
+
+        if jungle_log_count == 0:
+            time.sleep(0.05)
+            break
+
+        print("log count: ",jungle_log_count)
+        placeLog(1)
+
 
 m.echo("script started, waiting 1 second")
 time.sleep(1)
 
+"""
 while True:
     ## 1-is go 2
     ## 5 blok ileride blok var ise sağa geç 
@@ -186,24 +245,5 @@ while True:
 
     
 
-    while True:
-        # 1 means (to) first corner
-        placeCocoas(1)
-        moveToCorner(2)
-        placeCocoas(2)
-        placeLog(2)
-        placeCocoas(2)
-        moveToCorner(1)
-        placeCocoas(1)
-
-        inv = m.player_inventory()
-        jungle_log_items = [item for item in inv if "jungle_log" in item.item]
-        jungle_log_count = sum(item.count for item in jungle_log_items)
-
-        if jungle_log_count == 0:
-            time.sleep(0.05)
-            break
-
-        print("log count: ",jungle_log_count)
-        placeLog(1)
     time.sleep(0.05)
+"""

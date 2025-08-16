@@ -2,11 +2,12 @@ from system.lib import minescript as m
 import time
 import pyautogui
 import keyboard
+import sys
 
-# x = 5
-m.player_press_sneak(True)
-# m.execute(f"/chest {x}")
+
 # -----------------------------------------------------------------
+
+# sys.exit()
 
 # m.player_set_orientation(0,0)
 # m.player_press_forward(True)
